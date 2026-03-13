@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>부민병원 부산 입사 동의서</title>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js" onerror="document.getElementById('pwError').textContent='스크립트 로딩 실패. 인터넷 연결을 확인해주세요.'"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" onerror="document.getElementById('pwError').textContent='스크립트 로딩 실패. 인터넷 연결을 확인해주세요.'"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" onerror="document.getElementById('pwError').textContent='스크립트 로딩 실패. 인터넷 연결을 확인해주세요.'"></script>
@@ -75,7 +74,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
 .doc-table th{background:var(--blue-light);color:var(--blue);padding:9px;font-weight:600;text-align:left;}
 .doc-table td{padding:9px;vertical-align:middle;}
 .doc-table th, .doc-table td {border: 1px solid var(--border);}
-/* 래퍼와 겹치는 테두리 제거 */
 .doc-table tr:first-child th { border-top: none; }
 .doc-table tr:last-child td { border-bottom: none; }
 .doc-table tr th:first-child, .doc-table tr td:first-child { border-left: none; }
@@ -331,7 +329,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
         <div class="done-card">
           <div class="done-icon">✅</div>
           <div class="done-title">동의서 작성 완료!</div>
-          <div class="done-sub" id="doneSubMsg">부민병원 부산 입사 서류 통합 동의서가<br>성공적으로 작성되었습니다.</div>
+          <div class="done-sub" id="doneSubMsg">입사 서류 통합 동의서가<br>성공적으로 작성되었습니다.</div>
           <div class="action-btns">
             <button class="btn-action btn-submit-hr" id="btnSendHR" onclick="sendToHR()">📨 담당자에게 전달하기</button>
           </div>
@@ -358,7 +356,6 @@ function checkPW() {
   if (val === PASS) {
     document.getElementById('lockScreen').style.display = 'none';
     document.getElementById('mainApp').style.display = 'block';
-    // 서명 패드 초기화는 서명 페이지(page3)에 도달했을 때 수행하도록 이동
   } else {
     var e = document.getElementById('pwError');
     e.textContent = '비밀번호가 올바르지 않습니다.';
@@ -374,7 +371,6 @@ function goTo(idx) {
   currentPage = idx;
   updateNav(); updateProgress(); window.scrollTo(0,0);
   
-  // 서명 페이지(인덱스 3) 진입 시 캔버스 초기화 및 크기 조정
   if (idx === 3) {
     setTimeout(function() {
       if (!signaturePad) {
@@ -412,7 +408,6 @@ function initSig() {
 
 function resizeSig() {
   const c = document.getElementById('signature-pad');
-  // 캔버스가 화면에 보이지 않을 때는 크기 계산을 건너뜀
   if (c.offsetWidth === 0) return;
   
   const r = Math.max(window.devicePixelRatio||1,1);
@@ -478,14 +473,6 @@ function buildPDF() {
     doc.setFontSize(8); doc.setTextColor(140,140,140);
     doc.text(dateStr + '  |  ' + n + '/3 페이지', 105, 290, {align:'center'});
     doc.setTextColor(30,30,30);
-  }
-  function sec(y, title, r,g,b) {
-    doc.setFillColor(r,g,b); doc.setGState && doc.setGState(new doc.GState({opacity:0.15}));
-    doc.setFillColor(r,g,b,0.15);
-    doc.rect(lm,y-4,lw,7,'F');
-    doc.setFontSize(9.5); doc.setFont(undefined,'bold'); doc.setTextColor(r,g,b);
-    doc.text(title, lm+3, y+1); doc.setTextColor(30,30,30); doc.setFont(undefined,'normal');
-    return y+11;
   }
   function wrap(t, x, y, w) {
     var lines = doc.splitTextToSize(t, w);
@@ -603,6 +590,7 @@ function buildPDF() {
   pdfBlob = doc.output('blob');
 }
 
+// 구글 앱스 스크립트로 데이터를 전송하는 함수
 function sendToHR() {
   var btn = document.getElementById('btnSendHR');
   var status = document.getElementById('sendStatus');
@@ -613,36 +601,51 @@ function sendToHR() {
   var dateStr = new Date().toLocaleString('ko-KR');
 
   btn.disabled = true;
-  btn.textContent = '⏳ 전송 중...';
+  btn.textContent = '⏳ 구글 드라이브로 전송 중...';
   status.textContent = '';
 
   var reader = new FileReader();
   reader.readAsDataURL(pdfBlob);
   reader.onloadend = function() {
-    var base64pdf = reader.result.split(',')[1];
+    // Base64 문자열에서 순수 데이터만 추출
+    var base64data = reader.result.split(',')[1]; 
 
-    // EmailJS 설정 확인 필요
-    emailjs.init('JE75nwTqMbAp0fnmR'); 
-    emailjs.send('service_873o92g', 'template_pcv437r', { 
-      to_email: 'buminhr@bumin.co.kr',
-      from_name: name,
+    // 알려주신 웹 앱 URL 적용 완료
+    var scriptUrl = "https://script.google.com/macros/s/AKfycbxxnLQB-lCO70P2tnBi142IvFYn_aMWVChEGfrlUWBI0eZIYEjR7qlbyE4XA4X261A/exec"; 
+
+    var payload = {
+      name: name,
       dept: dept,
       phone: phone,
-      join_date: joinDate,
-      submit_time: dateStr,
-      agree_security: getRadio('rg0') === 'yes' ? '동의함' : '동의하지 않음',
-      agree_privacy: getRadio('rg0b') === 'yes' ? '동의함' : '동의하지 않음',
-      message: name + '님(' + dept + ')이 입사 동의서를 제출했습니다. 연락처: ' + phone + ' 제출일시: ' + dateStr
-    }).then(function() {
+      date: dateStr,
+      pdfBase64: base64data
+    };
+
+    // fetch API를 사용해 구글 서버에 안정적으로 전송
+    // text/plain 방식으로 전송하여 CORS 정책에 의한 막힘을 방지합니다.
+    fetch(scriptUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(function(response) {
+      if (!response.ok) throw new Error('Network response error');
+      return response.json();
+    })
+    .then(function(data) {
       btn.textContent = '✅ 전송 완료!';
       status.style.color = 'var(--green)';
-      status.textContent = '담당자(buminhr@bumin.co.kr)에게 성공적으로 전달되었습니다!';
-      document.getElementById('doneSubMsg').innerHTML = name + '님의 동의서가<br>담당자에게 전달되었습니다. 🎉';
-    }, function(error) {
+      status.textContent = '담당자에게 성공적으로 전달되었으며 폴더에 저장되었습니다!';
+      document.getElementById('doneSubMsg').innerHTML = name + '님의 동의서가<br>성공적으로 접수되었습니다. 🎉';
+    })
+    .catch(function(error) {
       btn.disabled = false;
-      btn.textContent = '📨 담당자에게 전달하기';
+      btn.textContent = '📨 담당자에게 다시 전달하기';
       status.style.color = 'var(--red)';
-      status.textContent = '전송 실패: EmailJS 설정을 확인해주세요. (' + JSON.stringify(error) + ')';
+      status.textContent = '통신 지연이 발생했습니다. 다시 한번 시도해 주세요.';
+      console.error('Error:', error);
     });
   };
 }

@@ -595,9 +595,7 @@ function sendToHR() {
       submit_time: dateStr,
       agree_security: getRadio('rg0') === 'yes' ? '동의함' : '동의하지 않음',
       agree_privacy: getRadio('rg0b') === 'yes' ? '동의함' : '동의하지 않음',
-      message: name + '님(' + dept + ')이 입사 동의서를 제출했습니다.
-연락처: ' + phone + '
-제출일시: ' + dateStr
+      message: name + '님(' + dept + ')이 입사 동의서를 제출했습니다. 연락처: ' + phone + ' 제출일시: ' + dateStr
     }).then(function() {
       btn.textContent = '✅ 전송 완료!';
       status.style.color = 'var(--green)';

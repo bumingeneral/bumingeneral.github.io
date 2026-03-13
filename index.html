@@ -335,26 +335,13 @@ const PASS = "1234";
 let pdfBlob = null, submittedName = '';
 
 function checkPW() {
-  // debug
   var val = document.getElementById('pwInput').value.trim();
   if (val === PASS) {
     document.getElementById('lockScreen').style.display = 'none';
     document.getElementById('mainApp').style.display = 'block';
     initSig();
-    return;
-  }
-  var e = document.getElementById('pwError');
-  e.textContent = '입력: ' + val.length + '자리 // 불일치';
-  document.getElementById('pwInput').value = '';
-  setTimeout(function(){ e.textContent = ''; }, 4000);
-  return;
-  // original below (unreachable)
-  if (document.getElementById('pwInput').value.trim() === PASS) {
-    document.getElementById('lockScreen').style.display = 'none';
-    document.getElementById('mainApp').style.display = 'block';
-    initSig();
   } else {
-    const e = document.getElementById('pwError');
+    var e = document.getElementById('pwError');
     e.textContent = '비밀번호가 올바르지 않습니다.';
     document.getElementById('pwInput').value = '';
     setTimeout(function(){ e.textContent = ''; }, 3000);

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>부민병원 부산 입사 동의서</title>
+<title>부산 부민병원 입사 동의서</title>
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js" onerror="document.getElementById('pwError').textContent='스크립트 로딩 실패. 인터넷 연결을 확인해주세요.'"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" onerror="document.getElementById('pwError').textContent='스크립트 로딩 실패. 인터넷 연결을 확인해주세요.'"></script>
@@ -128,7 +128,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
 <div id="lockScreen">
   <div class="lock-card">
     <div class="hospital-icon">🏥</div>
-    <div class="lock-logo">부민병원 부산</div>
+    <div class="lock-logo">부산 부민병원</div>
     <div class="lock-sub">BUMIN HOSPITAL BUSAN</div>
     <div class="lock-title">입사 서류 동의 시스템</div>
     <input type="password" class="lock-input" id="pwInput" placeholder="••••" maxlength="10"
@@ -152,7 +152,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
 <div id="mainApp">
   <div class="app-header">
     <div>
-      <div class="header-logo">🏥 부민병원 부산</div>
+      <div class="header-logo">🏥 부산 부민병원</div>
       <div class="header-sub">입사 서류 통합 동의서</div>
     </div>
     <button class="qr-btn" onclick="showQR()">📱 QR공유</button>
@@ -431,7 +431,7 @@ function buildPDF() {
     doc.setFillColor(26,95,168); doc.rect(0,0,210,26,'F');
     doc.setTextColor(255,255,255);
     doc.setFontSize(12); doc.setFont(undefined,'bold');
-    doc.text('부민병원 부산  |  입사 서류 통합 동의서', 105, 10, {align:'center'});
+    doc.text('부산 부민병원  |  입사 서류 통합 동의서', 105, 10, {align:'center'});
     doc.setFontSize(9.5); doc.setFont(undefined,'normal');
     doc.text(t, 105, 21, {align:'center'});
     doc.setTextColor(30,30,30);

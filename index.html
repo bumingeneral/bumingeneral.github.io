@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>부산 부민병원 입사 동의서</title>
+<title>부민병원 부산 입사 동의서</title>
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js" onerror="document.getElementById('pwError').textContent='스크립트 로딩 실패. 인터넷 연결을 확인해주세요.'"></script>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js" onerror="document.getElementById('pwError').textContent='스크립트 로딩 실패. 인터넷 연결을 확인해주세요.'"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" onerror="document.getElementById('pwError').textContent='스크립트 로딩 실패. 인터넷 연결을 확인해주세요.'"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" onerror="document.getElementById('pwError').textContent='스크립트 로딩 실패. 인터넷 연결을 확인해주세요.'"></script>
 <style>
@@ -61,11 +61,29 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
 .section-title.green{color:var(--green);border-color:var(--green);}
 .section-title.orange{color:#b45309;border-color:#d97706;}
 
-.doc-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.8rem;}
-.doc-table th{background:var(--blue-light);color:var(--blue);padding:7px 9px;border:1px solid var(--border);font-weight:600;text-align:left;}
-.doc-table td{padding:7px 9px;border:1px solid var(--border);vertical-align:top;}
+/* 모바일 표 깨짐 방지를 위한 반응형 래퍼 */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+}
+.doc-table{width:100%;border-collapse:collapse;font-size:.8rem;min-width:450px;margin:0;}
+.doc-table th{background:var(--blue-light);color:var(--blue);padding:9px;font-weight:600;text-align:left;}
+.doc-table td{padding:9px;vertical-align:middle;}
+.doc-table th, .doc-table td {border: 1px solid var(--border);}
+/* 래퍼와 겹치는 테두리 제거 */
+.doc-table tr:first-child th { border-top: none; }
+.doc-table tr:last-child td { border-bottom: none; }
+.doc-table tr th:first-child, .doc-table tr td:first-child { border-left: none; }
+.doc-table tr th:last-child, .doc-table tr td:last-child { border-right: none; }
+
 .doc-table.green th{background:var(--green-light);color:var(--green);}
 .doc-table.orange th{background:#fef3c7;color:#b45309;}
+
 .doc-note{background:#fff8e1;border-left:3px solid #f4a900;padding:9px 11px;border-radius:0 8px 8px 0;font-size:.8rem;color:#7a5a00;margin:8px 0;}
 .scroll-hint{text-align:center;padding:7px;font-size:.73rem;color:var(--text-muted);border-top:1px dashed var(--border);animation:bounce 1.5s infinite;}
 @keyframes bounce{0%,100%{opacity:.5}50%{opacity:1}}
@@ -91,10 +109,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 
 .sig-label{font-size:.8rem;font-weight:700;color:var(--text-muted);margin-bottom:7px;display:block;}
-.sig-container{border:2px dashed var(--blue);border-radius:12px;background:#fafbff;position:relative;}
+.sig-container{border:2px dashed var(--blue);border-radius:12px;background:#fafbff;position:relative;overflow:hidden;}
 #signature-pad{width:100%;height:150px;display:block;touch-action:none;cursor:crosshair;}
-.sig-clear{position:absolute;top:7px;right:7px;background:rgba(255,255,255,.92);border:1px solid var(--border);border-radius:8px;padding:3px 9px;font-size:.73rem;cursor:pointer;color:var(--text-muted);}
-.sig-hint{text-align:center;font-size:.73rem;color:var(--text-muted);padding:5px;border-top:1px dashed var(--border);}
+.sig-clear{position:absolute;top:7px;right:7px;background:rgba(255,255,255,.92);border:1px solid var(--border);border-radius:8px;padding:3px 9px;font-size:.73rem;cursor:pointer;color:var(--text-muted);z-index:10;}
+.sig-hint{text-align:center;font-size:.73rem;color:var(--text-muted);padding:5px;border-top:1px dashed var(--border);pointer-events:none;}
 
 .nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;background:#fff;border-top:1px solid var(--border);padding:10px 16px 18px;display:flex;gap:9px;box-shadow:0 -4px 20px rgba(26,95,168,.08);}
 .btn-prev{flex:1;padding:13px;background:var(--gray);color:var(--text-muted);border:2px solid var(--border);border-radius:11px;font-size:.92rem;font-weight:600;cursor:pointer;}
@@ -128,7 +146,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
 <div id="lockScreen">
   <div class="lock-card">
     <div class="hospital-icon">🏥</div>
-    <div class="lock-logo">부산 부민병원</div>
+    <div class="lock-logo">부민병원 부산</div>
     <div class="lock-sub">BUMIN HOSPITAL BUSAN</div>
     <div class="lock-title">입사 서류 동의 시스템</div>
     <input type="password" class="lock-input" id="pwInput" placeholder="••••" maxlength="10"
@@ -152,7 +170,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
 <div id="mainApp">
   <div class="app-header">
     <div>
-      <div class="header-logo">🏥 부산 부민병원</div>
+      <div class="header-logo">🏥 부민병원 부산</div>
       <div class="header-sub">입사 서류 통합 동의서</div>
     </div>
     <button class="qr-btn" onclick="showQR()">📱 QR공유</button>
@@ -166,7 +184,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
       <div class="progress-step" onclick="goTo(3)"><span class="step-num">✍️</span>서명</div>
     </div>
 
-    <!-- PAGE 1 -->
     <div class="page-section active" id="page0">
       <div class="card">
         <div class="card-header blue">
@@ -206,7 +223,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
       </div>
     </div>
 
-    <!-- PAGE 2 -->
     <div class="page-section" id="page1">
       <div class="card">
         <div class="card-header green">
@@ -221,17 +237,19 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
           <p>• 회비는 매월 급여에서 정기적으로 일괄 공제한다.</p>
           <p>• 운영자금: 매월 갹출 회비, 은행이자, 기타 찬조금 등</p>
           <div class="section-title green">3. 경조금 지급 규정</div>
-          <table class="doc-table green">
-            <tr><th>구분</th><th>항목</th><th>금액</th><th>비고</th></tr>
-            <tr><td rowspan="4">결혼</td><td>본인 (근속 1년 미만)</td><td>100,000원</td><td rowspan="4">입사즉시 100% 지급</td></tr>
-            <tr><td>본인 (근속 1년 이상)</td><td>300,000원</td></tr>
-            <tr><td>자녀 (근속 1년 미만)</td><td>100,000원</td></tr>
-            <tr><td>자녀 (근속 1년 이상)</td><td>300,000원</td></tr>
-            <tr><td rowspan="4">사망</td><td>본인</td><td>500,000원</td><td rowspan="4">입사즉시 100% 지급<br>상조비품 및 상조기 지급</td></tr>
-            <tr><td>배우자</td><td>500,000원</td></tr>
-            <tr><td>부모 / (배)부모</td><td>300,000원</td></tr>
-            <tr><td>자녀</td><td>500,000원</td></tr>
-          </table>
+          <div class="table-responsive">
+            <table class="doc-table green">
+              <tr><th>구분</th><th>항목</th><th>금액</th><th>비고</th></tr>
+              <tr><td rowspan="4">결혼</td><td>본인 (근속 1년 미만)</td><td>100,000원</td><td rowspan="4">입사즉시 100% 지급</td></tr>
+              <tr><td>본인 (근속 1년 이상)</td><td>300,000원</td></tr>
+              <tr><td>자녀 (근속 1년 미만)</td><td>100,000원</td></tr>
+              <tr><td>자녀 (근속 1년 이상)</td><td>300,000원</td></tr>
+              <tr><td rowspan="4">사망</td><td>본인</td><td>500,000원</td><td rowspan="4">입사즉시 100% 지급<br>상조비품 및 상조기 지급</td></tr>
+              <tr><td>배우자</td><td>500,000원</td></tr>
+              <tr><td>부모 / (배)부모</td><td>300,000원</td></tr>
+              <tr><td>자녀</td><td>500,000원</td></tr>
+            </table>
+          </div>
           <div class="section-title green" style="margin-top:14px;">4. 기타사항</div>
           <p>본회의 회원은 회비납부와 회칙 및 의결사항을 준수할 의무를 가진다.</p>
           <div class="doc-note">부산부민병원 상조회 규정에 근거하여 상기와 같이 가입 신청 및 상조회비 급여 공제에 동의합니다.</div>
@@ -244,7 +262,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
       </div>
     </div>
 
-    <!-- PAGE 3 -->
     <div class="page-section" id="page2">
       <div class="card">
         <div class="card-header orange">
@@ -261,18 +278,20 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
           <p>• 근속 6개월~1년 미만 퇴사자 — 급여 <strong>50% 공제</strong></p><br>
           <p><strong>6.</strong> 위 내용은 규정 제1조~제13조에 의거한다.</p>
           <div class="section-title orange" style="margin-top:14px;">4. 부서별 지급 및 교환주기</div>
-          <table class="doc-table orange">
-            <tr><th>부서명</th><th>지급수</th><th>교환주기</th></tr>
-            <tr><td>진료부</td><td>2벌</td><td>2년 (1벌씩 지급)</td></tr>
-            <tr><td>간호부 (병동·외래)</td><td>신규 2벌</td><td>1년 (2년차 지급X) ※간호화 1켤레, ICU: 크록스 1켤레</td></tr>
-            <tr><td>사회복지사/약제팀/고객관리팀/진료협력팀</td><td>1벌</td><td>1년</td></tr>
-            <tr><td>의료정보팀/심사평가팀/감염관리팀</td><td>1벌</td><td>2년</td></tr>
-            <tr><td>영상의학실/진검의학실/병리과/재활치료실/심혈관센터</td><td>1벌</td><td>기능복 1년 / 아웃가운 2년</td></tr>
-            <tr><td>영양팀</td><td>2벌</td><td>1년 (1벌씩 지급)</td></tr>
-            <tr><td>원무팀</td><td>1벌</td><td>2년 (블라우스 1년)</td></tr>
-            <tr><td>건강검진센터</td><td>2벌</td><td>1년 (2년차 지급X)</td></tr>
-            <tr><td>관리팀</td><td>각 1벌 + 안전화 1켤레</td><td>2년 (하복 1년)</td></tr>
-          </table>
+          <div class="table-responsive">
+            <table class="doc-table orange">
+              <tr><th>부서명</th><th>지급수</th><th>교환주기</th></tr>
+              <tr><td>진료부</td><td>2벌</td><td>2년 (1벌씩 지급)</td></tr>
+              <tr><td>간호부 (병동·외래)</td><td>신규 2벌</td><td>1년 (2년차 지급X) ※간호화 1켤레, ICU: 크록스 1켤레</td></tr>
+              <tr><td>사회복지사/약제팀/고객관리팀/진료협력팀</td><td>1벌</td><td>1년</td></tr>
+              <tr><td>의료정보팀/심사평가팀/감염관리팀</td><td>1벌</td><td>2년</td></tr>
+              <tr><td>영상의학실/진검의학실/병리과/재활치료실/심혈관센터</td><td>1벌</td><td>기능복 1년 / 아웃가운 2년</td></tr>
+              <tr><td>영양팀</td><td>2벌</td><td>1년 (1벌씩 지급)</td></tr>
+              <tr><td>원무팀</td><td>1벌</td><td>2년 (블라우스 1년)</td></tr>
+              <tr><td>건강검진센터</td><td>2벌</td><td>1년 (2년차 지급X)</td></tr>
+              <tr><td>관리팀</td><td>각 1벌 + 안전화 1켤레</td><td>2년 (하복 1년)</td></tr>
+            </table>
+          </div>
           <div class="doc-note" style="border-color:#d97706;">본인은 근무복 지급 및 관리 내용을 숙지하고 준수할 것을 확인합니다.</div>
         </div>
         <div class="scroll-hint">↕ 스크롤하여 전체 내용을 확인하세요</div>
@@ -283,7 +302,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
       </div>
     </div>
 
-    <!-- PAGE 4: 서명 -->
     <div class="page-section" id="page3">
       <div class="card">
         <div class="card-header blue">
@@ -333,13 +351,14 @@ body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#e8
 <script>
 const PASS = "1234";
 let pdfBlob = null, submittedName = '';
+let signaturePad = null;
 
 function checkPW() {
   var val = document.getElementById('pwInput').value.trim();
   if (val === PASS) {
     document.getElementById('lockScreen').style.display = 'none';
     document.getElementById('mainApp').style.display = 'block';
-    initSig();
+    // 서명 패드 초기화는 서명 페이지(page3)에 도달했을 때 수행하도록 이동
   } else {
     var e = document.getElementById('pwError');
     e.textContent = '비밀번호가 올바르지 않습니다.';
@@ -348,14 +367,25 @@ function checkPW() {
   }
 }
 
-
 let currentPage = 0;
 function goTo(idx) {
   if (idx < 0 || idx > 3) return;
   document.querySelectorAll('.page-section').forEach(function(el,i){ el.classList.toggle('active', i===idx); });
   currentPage = idx;
   updateNav(); updateProgress(); window.scrollTo(0,0);
+  
+  // 서명 페이지(인덱스 3) 진입 시 캔버스 초기화 및 크기 조정
+  if (idx === 3) {
+    setTimeout(function() {
+      if (!signaturePad) {
+        initSig();
+      } else {
+        resizeSig();
+      }
+    }, 50);
+  }
 }
+
 function nextPage() { goTo(currentPage+1); }
 function prevPage() { goTo(currentPage-1); }
 function updateNav() {
@@ -371,20 +401,28 @@ function updateProgress() {
   });
 }
 
-let signaturePad;
 function initSig() {
   const c = document.getElementById('signature-pad');
-  signaturePad = new SignaturePad(c, {backgroundColor:'rgb(255,255,255)', penColor:'rgb(26,95,168)'});
+  signaturePad = new SignaturePad(c, {
+    backgroundColor: 'rgb(255,255,255)', 
+    penColor: 'rgb(26,95,168)'
+  });
   resizeSig();
 }
+
 function resizeSig() {
   const c = document.getElementById('signature-pad');
+  // 캔버스가 화면에 보이지 않을 때는 크기 계산을 건너뜀
+  if (c.offsetWidth === 0) return;
+  
   const r = Math.max(window.devicePixelRatio||1,1);
-  c.width = c.offsetWidth*r; c.height = c.offsetHeight*r;
+  c.width = c.offsetWidth * r;
+  c.height = c.offsetHeight * r;
   c.getContext('2d').scale(r,r);
+  
   if(signaturePad) signaturePad.clear();
 }
-function clearSig() { signaturePad.clear(); }
+function clearSig() { if(signaturePad) signaturePad.clear(); }
 window.addEventListener('resize', resizeSig);
 
 const agreeState = {};
@@ -431,7 +469,7 @@ function buildPDF() {
     doc.setFillColor(26,95,168); doc.rect(0,0,210,26,'F');
     doc.setTextColor(255,255,255);
     doc.setFontSize(12); doc.setFont(undefined,'bold');
-    doc.text('부산 부민병원  |  입사 서류 통합 동의서', 105, 10, {align:'center'});
+    doc.text('부민병원 부산  |  입사 서류 통합 동의서', 105, 10, {align:'center'});
     doc.setFontSize(9.5); doc.setFont(undefined,'normal');
     doc.text(t, 105, 21, {align:'center'});
     doc.setTextColor(30,30,30);
@@ -578,15 +616,14 @@ function sendToHR() {
   btn.textContent = '⏳ 전송 중...';
   status.textContent = '';
 
-  // PDF를 base64로 변환
   var reader = new FileReader();
   reader.readAsDataURL(pdfBlob);
   reader.onloadend = function() {
     var base64pdf = reader.result.split(',')[1];
 
-    // EmailJS 전송
-    emailjs.init('JE75nwTqMbAp0fnmR'); // ← EmailJS 공개키로 교체
-    emailjs.send('service_873o92g', 'template_pcv437r', { // ← 서비스ID, 템플릿ID 교체
+    // EmailJS 설정 확인 필요
+    emailjs.init('JE75nwTqMbAp0fnmR'); 
+    emailjs.send('service_873o92g', 'template_pcv437r', { 
       to_email: 'buminhr@bumin.co.kr',
       from_name: name,
       dept: dept,

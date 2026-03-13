@@ -598,8 +598,8 @@ function sendToHR() {
     var base64pdf = reader.result.split(',')[1];
 
     // EmailJS 전송
-    emailjs.init('YOUR_EMAILJS_PUBLIC_KEY'); // ← EmailJS 공개키로 교체
-    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', { // ← 서비스ID, 템플릿ID 교체
+    emailjs.init('JE75nwTqMbAp0fnmR'); // ← EmailJS 공개키로 교체
+    emailjs.send('service_873o92g', 'template_pcv437r', { // ← 서비스ID, 템플릿ID 교체
       to_email: 'buminhr@bumin.co.kr',
       from_name: name,
       dept: dept,

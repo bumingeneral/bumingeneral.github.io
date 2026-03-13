@@ -3,74 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>병원 입사 서류 시스템 (3종 통합)</title>
+    <title>부민병원 부산 입사 서류 시스템</title>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        body { font-family: -apple-system, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
+        body { font-family: -apple-system, sans-serif; background-color: #f0f2f5; margin: 0; padding: 10px; }
         .container { max-width: 500px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: #007bff; color: white; padding: 20px; text-align: center; }
-        .tab-menu { display: flex; background: #e9ecef; }
-        .tab-btn { flex: 1; padding: 12px; border: none; cursor: pointer; font-size: 0.9rem; background: none; color: #666; border-bottom: 3px solid transparent; }
+        .header { background: #fff; color: #333; padding: 15px; text-align: center; border-bottom: 1px solid #ddd; }
+        /* 1. HTML에 로고 스타일 추가 */
+        .logo-img { max-width: 80%; height: auto; margin-bottom: 10px; }
+        .tab-menu { display: flex; background: #e9ecef; border-bottom: 1px solid #ddd; }
+        .tab-btn { flex: 1; padding: 12px; border: none; cursor: pointer; font-size: 0.85rem; background: none; color: #666; transition: 0.3s; }
         .tab-btn.active { color: #007bff; border-bottom: 3px solid #007bff; font-weight: bold; background: #fff; }
-        .content-section { padding: 20px; display: none; min-height: 300px; }
+        .content-section { padding: 20px; display: none; }
         .content-section.active { display: block; }
-        .doc-viewer { background: #f8f9fa; border: 1px solid #ddd; padding: 15px; border-radius: 8px; font-size: 0.85rem; height: 250px; overflow-y: auto; white-space: pre-wrap; margin-bottom: 15px; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
-        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        .canvas-container { border: 2px dashed #007bff; border-radius: 8px; background: #fff; margin-top: 10px; }
+        .doc-box { background: #f8f9fa; border: 1px solid #eee; padding: 15px; border-radius: 8px; font-size: 0.9rem; line-height: 1.6; height: 300px; overflow-y: auto; margin-bottom: 15px; color: #444; }
+        .input-group { margin-bottom: 12px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
+        .signature-label { margin-top: 15px; display: block; font-weight: bold; color: #007bff; }
+        .canvas-container { border: 2px dashed #007bff; border-radius: 8px; background: #fff; margin-top: 5px; }
         canvas { width: 100%; height: 150px; touch-action: none; }
-        .btn-save { width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; margin-top: 10px; }
+        .btn-save { width: 100%; padding: 16px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; margin-top: 20px; cursor: pointer; }
     </style>
 </head>
 <body style="display:none;" id="mainBody">
 
 <div class="container">
     <div class="header">
-        <h3>📄 입사 서류 통합 동의</h3>
+        <img src="image_0.png" alt="부민병원 부산 로고" class="logo-img">
+        <h3>입사 서류 통합 동의서</h3>
     </div>
 
     <div class="tab-menu">
-        <button class="tab-btn active" onclick="showTab(0)">동의서 1</button>
-        <button class="tab-btn" onclick="showTab(1)">동의서 2</button>
-        <button class="tab-btn" onclick="showTab(2)">동의서 3</button>
+        <button class="tab-btn active" onclick="showTab(0)">1페이지</button>
+        <button class="tab-btn" onclick="showTab(1)">2페이지</button>
+        <button class="tab-btn" onclick="showTab(2)">3페이지/서명</button>
     </div>
 
     <div id="section0" class="content-section active">
-        <label>1페이지 내용 (ONEFFICE 양식)</label>
-        <div class="doc-viewer">여기에 첫 번째 동의서(예: 개인정보 수집 동의)의 상세 텍스트를 입력하세요.</div>
+        <div class="doc-box">
+            <strong>[제 1 장: 개인정보 수집 및 이용 동의]</strong><br><br>
+            여기에 PDF 1페이지의 내용을 복사해서 넣어주세요.
+        </div>
+        <p style="text-align:right; font-size:0.8rem; color:blue;">다음 탭을 눌러주세요 ➔</p>
     </div>
 
     <div id="section1" class="content-section">
-        <label>2페이지 내용 (ONEFFICE 양식)</label>
-        <div class="doc-viewer">여기에 두 번째 동의서(예: 보안 서약서)의 상세 텍스트를 입력하세요.</div>
+        <div class="doc-box">
+            <strong>[제 2 장: 보안 서약서 및 준수사항]</strong><br><br>
+            여기에 PDF 2페이지의 내용을 복사해서 넣어주세요.
+        </div>
+        <p style="text-align:right; font-size:0.8rem; color:blue;">다음 탭을 눌러주세요 ➔</p>
     </div>
 
     <div id="section2" class="content-section">
-        <label>3페이지 및 서명</label>
-        <div class="doc-viewer">여기에 세 번째 동의서 내용을 입력하세요.</div>
+        <div class="doc-box">
+            <strong>[제 3 장: 기타 동의 사항]</strong><br><br>
+            여기에 PDF 3페이지의 내용을 복사해서 넣어주세요.
+        </div>
         
         <div class="input-group">
-            <label>성명</label>
-            <input type="text" id="userName" placeholder="성함을 입력하세요">
+            <label>작성자 성명</label>
+            <input type="text" id="userName" placeholder="이름을 입력하세요">
         </div>
         <div class="input-group">
             <label>생년월일</label>
             <input type="date" id="userBirth">
         </div>
-        <label>서명 (아래 사각형 안)</label>
+        
+        <span class="signature-label">위 내용에 모두 동의하며 서명합니다.</span>
         <div class="canvas-container"><canvas id="signature-pad"></canvas></div>
-        <button class="btn-save" onclick="generateMultiPagePDF()">모든 동의서 PDF 저장</button>
+        
+        <button class="btn-save" onclick="generateFinalPDF()">동의서(3장) PDF 생성</button>
     </div>
 </div>
 
 <script>
-    // 비밀번호 보안
-    if (prompt("비밀번호를 입력하세요.") === "1234") {
+    // 비밀번호 설정 (초기값 1234)
+    if (prompt("병원 보안 비밀번호를 입력하세요.") === "1234") {
         document.getElementById('mainBody').style.display = 'block';
     } else {
-        alert("비밀번호 오류");
+        alert("비밀번호가 틀렸습니다.");
         window.location.reload();
     }
 
@@ -78,9 +92,8 @@
     const signaturePad = new SignaturePad(canvas, { backgroundColor: 'rgb(255, 255, 255)' });
 
     function showTab(idx) {
-        document.querySelectorAll('.content-section, .tab-btn').forEach((el, i) => {
-            el.classList.toggle('active', (i % 3) === idx);
-        });
+        document.querySelectorAll('.content-section').forEach((el, i) => el.classList.toggle('active', i === idx));
+        document.querySelectorAll('.tab-btn').forEach((el, i) => el.classList.toggle('active', i === idx));
         if(idx === 2) resizeCanvas();
     }
 
@@ -91,33 +104,58 @@
         canvas.getContext("2d").scale(ratio, ratio);
     }
 
-    async function generateMultiPagePDF() {
+    async function generateFinalPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         const name = document.getElementById('userName').value;
+        const birth = document.getElementById('userBirth').value;
         const sig = signaturePad.toDataURL();
 
-        if (!name || signaturePad.isEmpty()) return alert("정보를 모두 입력해 주세요.");
+        if (!name || !birth || signaturePad.isEmpty()) {
+            return alert("모든 정보 입력과 서명을 완료해 주세요.");
+        }
 
-        // 1페이지 생성 [cite: 1]
-        doc.text("제 1 장: 개인정보 수집 동의서", 10, 20);
-        doc.setFontSize(10);
-        doc.text("동의서 1페이지의 상세 내용을 여기에 배치합니다...", 10, 40);
+        // 2. PDF에 로고 추가 및 좌표 조정
+        // 로고 이미지 URL (HTML과 같은 폴더에 업로드된 경우)
+        const logoUrl = 'image_0.png'; 
         
-        // 2페이지 추가 [cite: 2]
-        doc.addPage();
-        doc.text("제 2 장: 보안 유지 서약서", 10, 20);
-        doc.text("동의서 2페이지의 상세 내용을 여기에 배치합니다...", 10, 40);
+        try {
+            // 이미지를 로드하여 PDF에 추가 (비동기 처리)
+            await doc.addImage(logoUrl, 'PNG', 20, 10, 50, 20); // x=20, y=10, width=50, height=20 (단위: mm)
+            
+            // 1페이지 생성 (좌표 조정)
+            doc.setFontSize(18);
+            doc.text("개인정보 수집 및 이용 동의서", 105, 40, { align: 'center' }); // y=40으로 수정
+            doc.setFontSize(10);
+            doc.text("1페이지 상세 내용 (여기에 1페이지 텍스트 반영)", 20, 60); // y=60으로 수정
 
-        // 3페이지 추가 [cite: 3]
-        doc.addPage();
-        doc.text("제 3 장: 기타 확인 사항 및 서명", 10, 20);
-        doc.text(`성명: ${name}`, 10, 50);
-        doc.addImage(sig, 'PNG', 10, 60, 50, 20);
-        doc.text(`작성일자: ${new Date().toLocaleDateString()}`, 10, 90);
+            // 2페이지 생성
+            doc.addPage();
+            await doc.addImage(logoUrl, 'PNG', 20, 10, 50, 20); // 2페이지 상단에도 로고 추가
+            doc.setFontSize(18);
+            doc.text("보안 서약서", 105, 40, { align: 'center' }); // y=40으로 수정
+            doc.setFontSize(10);
+            doc.text("2페이지 상세 내용 (여기에 2페이지 텍스트 반영)", 20, 60); // y=60으로 수정
 
-        doc.save(`입사서류_통합_${name}.pdf`);
-        alert("3페이지 분량의 PDF가 생성되었습니다.");
+            // 3페이지 생성
+            doc.addPage();
+            await doc.addImage(logoUrl, 'PNG', 20, 10, 50, 20); // 3페이지 상단에도 로고 추가
+            doc.setFontSize(18);
+            doc.text("기타 확인 및 최종 서명", 105, 40, { align: 'center' }); // y=40으로 수정
+            doc.setFontSize(12);
+            doc.text(`성 명: ${name}`, 20, 80); // y=80으로 수정
+            doc.text(`생년월일: ${birth}`, 20, 90); // y=90으로 수정
+            doc.text("본인은 상기 모든 동의 사항(1~3페이지)을 숙지하였으며,", 20, 110); // y=110으로 수정
+            doc.text("이에 기꺼이 동의합니다.", 20, 120); // y=120으로 수정
+            doc.addImage(sig, 'PNG', 20, 130, 50, 20); // 서명 이미지 y=130으로 수정
+            doc.text(`작성일자: ${new Date().toLocaleString()}`, 20, 160); // y=160으로 수정
+
+            doc.save(`입사동의서_통합_${name}.pdf`);
+            alert("부민병원 부산 3페이지 통합 동의서가 생성되었습니다.");
+        } catch (error) {
+            console.error('로고 이미지를 로드하지 못했습니다:', error);
+            alert('PDF 생성 중 로고 이미지를 불러오는 데 실패했습니다. 파일 업로드 상태를 확인해 주세요.');
+        }
     }
 </script>
 </body>
